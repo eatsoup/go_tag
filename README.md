@@ -10,7 +10,7 @@ export REGISTRY_USER='username'
 export REGISTRY_PASSWORD='password'
 ./go_tag repository/image:oldtag repository_image:newtag
 ```
-### Docker image
+### Docker image (6MB)
 ```bash
 docker run --rm -t -e REGISTRY_USER='username' -e REGISTRY_PASSWORD='password' eatsoup/go_tag go_tag repository/image:old_tag repository/image:new_tag
 ```
