@@ -31,7 +31,7 @@ func main() {
 	var registry string
 	if len(os.Args) < 3 {
 		fmt.Println("This application requires at least 2 parameters")
-		fmt.Printf("Example: %s register.example.com/nginx:dev register.example.com/nginx:1.0\n", os.Args[0])
+		fmt.Printf("Example: %s library/nginx:dev library/nginx:1.0\n", os.Args[0])
 		os.Exit(1)
 	}
 	oldTag = os.Args[1]
@@ -39,6 +39,7 @@ func main() {
 	registry = os.Getenv("REGISTRY")
 	if os.Getenv("REGISTRY_USER") == "" && os.Getenv("REGISTRY_PASSWORD") == "" {
 		fmt.Println("REGISTRY_USER and REGISTRY_PASSWORD environment variable not found, assuming unauthenticated")
+		fmt.Println("Otherwise please make sure the environment variables are exported")
 		authenticated = false
 	} else {
 		fmt.Println("REGISTRY_USER or REGISTRY_PASSWORD environment variable found, using authentication")

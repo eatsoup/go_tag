@@ -9,4 +9,3 @@ RUN chmod +x /usr/bin/go_tag
 FROM scratch
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /usr/bin/go_tag /usr/bin/go_tag
-# ENTRYPOINT ["/go/bin/go_tag"]
