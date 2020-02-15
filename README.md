@@ -1,8 +1,30 @@
 # GO TAG
 ## Simple tool to tag a remote docker image without pulling it first
+## Easy way to speed up your CI/CD!
 
 ## How to use
-### Tool
+This tool can be used for the Docker Hub, authenticated private registries and unauthenticated registries.
+### Docker hub
+```bash
+export REGISTRY_USER=your_docker.io_username
+export REGISTRY_PASSWORD=your_docker.io_password
+./go_tag your_repo/your_image:old_tag your_repo/your_image:new_tag
+```
+### Private authenicated registry
+```bash
+export REGISTRY=https://your_registry_url
+export REGISTRY_USER=your_registry_username
+export REGISTRY_PASSWORD=your_registry_password
+./go_tag your_repo/your_image:old_tag your_repo/your_image:new_tag
+```
+### Private unauthenicated registry
+```bash
+export REGISTRY=https://your_registry_url
+./go_tag your_repo/your_image:old_tag your_repo/your_image:new_tag
+```
+
+## How to run / install
+### From source
 ```bash
 git clone https://github.com/eatsoup/go_tag.git
 cd go_tag && go build .

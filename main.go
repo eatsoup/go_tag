@@ -71,7 +71,7 @@ func fetchManifest(registry, authToken, tag string) (string, []byte) {
 	request, _ := http.NewRequest("GET", url, nil)
 	request.Header.Set("Accept", "application/vnd.docker.distribution.manifest.v2+json")
 	if authToken != "" {
-		request.Header.Set("Authorization", "Bearer "+authToken)
+		request.Header.Set("Authorization", authToken)
 	}
 	client := &http.Client{}
 	r, err := client.Do(request)
@@ -107,7 +107,7 @@ func setTag(registry, authToken, image, newVersion string, manifest []byte) {
 	request, _ := http.NewRequest("PUT", url, bytes.NewBuffer(manifest))
 	request.Header.Set("Content-Type", "application/vnd.docker.distribution.manifest.v2+json")
 	if authToken != "" {
-		request.Header.Set("Authorization", "Bearer "+authToken)
+		request.Header.Set("Authorization", authToken)
 	}
 	client := &http.Client{}
 	r, err := client.Do(request)
@@ -129,7 +129,7 @@ func setTag(registry, authToken, image, newVersion string, manifest []byte) {
 
 func getAuthToken(registry, username, password, tag string) string {
 	var token authToken
-	var readToken string
+	var fullToken string
 	image := strings.Split(tag, ":")[0]
 	client := &http.Client{}
 	credentials := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
@@ -145,7 +145,9 @@ func getAuthToken(registry, username, password, tag string) string {
 		defer resp.Body.Close()
 		body, _ := ioutil.ReadAll(resp.Body)
 		err = json.Unmarshal([]byte(string(body)), &token)
-		readToken = token.Token
+		fullToken = "Bearer " + token.Token
+		return fullToken
 	}
-	return readToken
+	fullToken = "Basic " + credentials
+	return fullToken
 }
