@@ -6,20 +6,20 @@
 This tool can be used for the Docker Hub, authenticated private registries and unauthenticated registries.
 ### Docker hub
 ```bash
-export REGISTRY_USER=your_docker.io_username
-export REGISTRY_PASSWORD=your_docker.io_password
+export REGISTRY_USER='your_docker.io_username'
+export REGISTRY_PASSWORD='your_docker.io_password'
 ./go_tag your_repo/your_image:old_tag your_repo/your_image:new_tag
 ```
 ### Private authenicated registry
 ```bash
-export REGISTRY=https://your_registry_url
-export REGISTRY_USER=your_registry_username
-export REGISTRY_PASSWORD=your_registry_password
+export REGISTRY='https://your_registry_url'
+export REGISTRY_USER='your_registry_username'
+export REGISTRY_PASSWORD='your_registry_password'
 ./go_tag your_repo/your_image:old_tag your_repo/your_image:new_tag
 ```
 ### Private unauthenicated registry
 ```bash
-export REGISTRY=https://your_registry_url
+export REGISTRY='https://your_registry_url'
 ./go_tag your_repo/your_image:old_tag your_repo/your_image:new_tag
 ```
 
@@ -35,4 +35,24 @@ export REGISTRY_PASSWORD='password'
 ### Docker image (6MB)
 ```bash
 docker run --rm -t -e REGISTRY_USER='username' -e REGISTRY_PASSWORD='password' eatsoup/go_tag go_tag repository/image:old_tag repository/image:new_tag
+```
+
+## Example .gitlab-ci.yml usage
+```
+variables: # Fed from CI/CD vars
+  REGISTRY: https://$CI_REGISTRY
+  REGISTRY_USER: $REGISTRY_USER
+  REGISTRY_PASSWORD: $REGISTRY_PASSWORD
+
+publish:
+  stage: publish
+  script:
+    - docker run --rm -t \
+        -e REGISTRY \
+        -e REGISTRY_USER \
+        -e REGISTRY_PASSWORD \
+        eatsoup/go_tag \
+        go_tag $CI_PROJECT_NAME:$CI_COMMIT_SHA $CI_PROJECT_NAME:latest
+  only:
+    - master
 ```
